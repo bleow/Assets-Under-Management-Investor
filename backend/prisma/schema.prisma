@@ -10,34 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Account {
-  id              Int         @id @default(autoincrement())
-  userName        String
+model Account {  
+  email           String  @id
   password        String
+  firstName       String
+  lastName        String
+  contactNo       Int
   banker          Banker?
   client          Client?
 }
 
 model Banker {
-  account         Account     @relation(fields: [bankerId], references: [id])
-  bankerId        Int         @unique
-  firstName       String
-  lastName        String
-  contactNo       Int
+  account         Account     @relation(fields: [bankerId], references: [email])
+  bankerId        String      @unique
   manages         Client[]
 }
 
 model Client {
-  account         Account     @relation(fields: [clientId], references: [id])
-  clientId        Int         @unique
-  firstName       String
-  lastName        String
-  contactNo       Int
+  account         Account     @relation(fields: [clientId], references: [email])
+  clientId        String      @unique
   investedCapital Float
   balanceCapital  Float
   estimatedBeta   Float
   managedBy       Banker @relation(fields: [managedById], references: [bankerId])
-  managedById     Int
+  managedById     String
   portfolioAssets PortfolioAsset[]
 }
 
@@ -54,7 +50,7 @@ model PortfolioAsset {
   investedCapital Float
   purchaseDate    DateTime
   ownedBy         Client @relation(fields: [ownedById], references: [clientId])
-  ownedById       Int
+  ownedById       String
 }
 
 model Asset {
