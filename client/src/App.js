@@ -1,29 +1,27 @@
-var React = require("react");
-var App = React.createClass({
-  getInitialState: function () {
-    return {
-      members: [],
-    };
-  },
-  componentDidMount() {
-    fetch("/users")
-      .then((res) => res.json())
-      .then((members) => this.setState({ members: members }));
-  },
-  render: function () {
-    return (
-      <div className="Users">
-        <h1>Users</h1>
-        {this.state.members.map((member) => (
-          <div key={member.id}>
-            {member.name} {member.surname} - {member.email}
-          </div>
-        ))}
-      </div>
-    );
-  },
-});
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AppLayout from "./components/layout/AppLayout";
+import Tutorial from "./pages/Tutorial";
+import Dashboard from "./pages/Dashboard";
+import Market from "./pages/Market";
+import Account from "./pages/Account";
 
-module.exports = App;
+function App() {
+  return (
+    <div>
+      <h1 className="App-header">Testing</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="/market" element={<Market />} />
+            <Route path="/tutorial" element={<Tutorial />} />
+            <Route path="/account" element={<Account />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
 
 export default App;
