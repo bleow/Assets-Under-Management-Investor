@@ -1,30 +1,11 @@
+const { PrismaClient } = require('@prisma/client');
+
 const router = require('express').Router();
-const {PrismaClient} = require('@prisma/client')
+const prisma = require('./prismaSingleton').getInstance();
 
-// Singleton design pattern for creating the Prisma client. 
-// This is to ensure only 1 ORM connects to our database and hence minimise overhead
-var prismaSingleton = (function() {
-  var instance;
-
-  function createInstance() {
-    var object = new PrismaClient();
-    return object;
-  }
-
-  return {
-    getInstance: function() {
-      if (!instance) {
-        instance = createInstance();
-      }
-      return instance;
-    }
-  };
-
-})();
-
-//prismaSingleton.getInstance();
-
-const prisma = new PrismaClient();
+router.get('/test', async(req, res, next) => {
+  res.json('lmao');
+})
 
 // Get all products
 router.get('/products', async (req, res, next) => {

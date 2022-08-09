@@ -6,21 +6,86 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id          Int       @id @default(autoincrement())
-  name        String    @unique
-  price       Float
-  createdAt   DateTime  @default(now())
-  category    Category? @relation(fields: [categoryId], references: [id])
-  categoryId  Int
+model Account {
+  id              Int         @id @default(autoincrement())
+  userName        String
+  password        String
+  banker          Banker?
+  client          Client?
 }
 
-model Category {
-  id        Int         @id @default(autoincrement())
-  name      String      @unique
-  products  Product[]
+model Banker {
+  account         Account     @relation(fields: [bankerId], references: [id])
+  bankerId        Int         @unique
+  firstName       String
+  lastName        String
+  contactNo       Int
+  manages         Client[]
+}
+
+model Client {
+  account         Account     @relation(fields: [clientId], references: [id])
+  clientId        Int         @unique
+  firstName       String
+  lastName        String
+  contactNo       Int
+  investedCapital Float
+  balanceCapital  Float
+  estimatedBeta   Float
+  managedBy       Banker @relation(fields: [managedById], references: [bankerId])
+  managedById     Int
+  portfolioAssets PortfolioAsset[]
+}
+
+model Messages {
+  id              Int         @id @default(autoincrement())
+  sentFrom        Int
+  sentTo          Int
+  sentDateTime    DateTime
+  messageBody     String
+}
+
+model PortfolioAsset {
+  id              Int         @id @default(autoincrement())
+  investedCapital Float
+  purchaseDate    DateTime
+  ownedBy         Client @relation(fields: [ownedById], references: [clientId])
+  ownedById       Int
+}
+
+model Asset {
+  stockName       String      @id @unique
+  assetClass      AssetClass
+  riskLevel       RiskLevel
+  sentiment       String
+  beta            Float
+}
+
+enum AssetClass {
+  SAVINGS_ACCOUNTS
+  FIXED_DEPOSITS
+  ENDOWMENT_PLANS
+  BONDS
+  GOVERNMENT_BONDS
+  CASH
+  MONEY_MARKET_FUNDS
+  UNIT_TRUSTS_OR_MUTUAL_FUNDS
+  STOCKS
+  EXCHANGE_TRADED_FUNDS
+  REAL_ESTATE
+  FUTURES
+  OPTIONS
+  COMMODITIES
+  CRYPTOCURRENCIES
+  COLLECTIBLES
+}
+
+enum RiskLevel {
+  LOW
+  MODERATE
+  HIGH
 }
