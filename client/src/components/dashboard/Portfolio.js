@@ -2,10 +2,10 @@ import React, { useCallback, useState } from "react";
 import { PieChart, Pie, Sector } from "recharts";
 
 const data = [
-  { name: "Finance", value: 400, fill: "#8884d8" },
-  { name: "Technology", value: 600, fill: "#82ca9d" },
-  { name: "Agriculture", value: 300, fill: "#ffc658" },
-  { name: "F&B", value: 200, fill: "#f6c7b6" },
+  { name: "Finance", value: 400, fill: "#ffc658" },
+  { name: "Technology", value: 600, fill: "#0070ff" },
+  { name: "Agriculture", value: 300, fill: "#1bff00" },
+  { name: "F&B", value: 200, fill: "#ff2d00" },
 ];
 
 const renderActiveShape = (props) => {
@@ -67,7 +67,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`Stock Value: ${value}`}</text>
+      >{`Stock Value: $${value}`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -91,13 +91,13 @@ export default function Portfolio() {
   );
 
   return (
-    <PieChart width={1000} height={1000}>
+    <PieChart width={600} height={600}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
         data={data}
-        cx={200}
-        cy={200}
+        cx={300}
+        cy={300}
         innerRadius={60}
         outerRadius={80}
         dataKey="value"

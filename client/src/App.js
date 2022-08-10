@@ -5,11 +5,14 @@ import Tutorial from "./pages/Tutorial";
 import Dashboard from "./pages/Dashboard";
 import Market from "./pages/Market";
 import Account from "./pages/Account";
+import AccountMenu from "./components/header/Header";
 
 function App() {
   return (
     <div>
-      <h1 className="App-header">Testing</h1>
+      <div className="App-header">
+        <AccountMenu></AccountMenu>
+      </div>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<AppLayout />}>

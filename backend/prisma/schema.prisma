@@ -2,63 +2,66 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
-model Account {  
-  email           String  @id
-  password        String
-  firstName       String
-  lastName        String
-  contactNo       Int
-  banker          Banker?
-  client          Client?
+model Account {
+  email     String  @id
+  password  String
+  firstName String
+  lastName  String
+  contactNo String
+  balance   Decimal
+  banker    Banker?
+  client    Client?
 }
 
 model Banker {
-  account         Account     @relation(fields: [bankerId], references: [email])
-  bankerId        String      @unique
-  manages         Client[]
+  account  Account  @relation(fields: [bankerId], references: [email])
+  bankerId String   @unique
+  manages  Client[]
 }
 
 model Client {
-  account         Account     @relation(fields: [clientId], references: [email])
-  clientId        String      @unique
+  account         Account          @relation(fields: [clientId], references: [email])
+  clientId        String           @unique
   investedCapital Float
   balanceCapital  Float
   estimatedBeta   Float
-  managedBy       Banker @relation(fields: [managedById], references: [bankerId])
+  managedBy       Banker           @relation(fields: [managedById], references: [bankerId])
   managedById     String
   portfolioAssets PortfolioAsset[]
 }
 
 model Messages {
-  id              Int         @id @default(autoincrement())
-  sentFrom        Int
-  sentTo          Int
-  sentDateTime    DateTime
-  messageBody     String
+  id           Int      @id @default(autoincrement())
+  sentFrom     Int
+  sentTo       Int
+  sentDateTime DateTime
+  messageBody  String
 }
 
 model PortfolioAsset {
-  id              Int         @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   investedCapital Float
   purchaseDate    DateTime
-  ownedBy         Client @relation(fields: [ownedById], references: [clientId])
+  ownedBy         Client   @relation(fields: [ownedById], references: [clientId])
   ownedById       String
 }
 
 model Asset {
-  stockName       String      @id @unique
-  assetClass      AssetClass
-  riskLevel       RiskLevel
-  sentiment       String
-  beta            Float
+  stockName  String     @id @unique
+  assetClass AssetClass
+  riskLevel  RiskLevel
+  sentiment  String
+  beta       Float
 }
 
 enum AssetClass {
