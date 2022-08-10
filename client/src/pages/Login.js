@@ -19,7 +19,7 @@ const Login = () => {
 
   function loginEvent() {
     // Need to authenticate with account database
-    fetch("/master/login", {
+    fetch("http://localhost:3001/master/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
       headers: {
@@ -29,12 +29,12 @@ const Login = () => {
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.accessToken) {
+          setEmail("");
+          setPassword("");
+          dispatch({ type: "login", user: email });
+          navigate("/");
         }
       });
-    setEmail("");
-    setPassword("");
-    dispatch({ type: "login", user: email });
-    navigate("/");
   }
 
   return (

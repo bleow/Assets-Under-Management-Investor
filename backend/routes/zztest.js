@@ -1,14 +1,14 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 
-const router = require('express').Router();
-const prisma = require('./prismaSingleton').getInstance();
+const router = require("express").Router();
+const prisma = require("./prismaSingleton").getInstance();
 
-router.get('/test', async(req, res, next) => {
-  res.json('lmao');
-})
+router.get("/test", async (req, res, next) => {
+  res.json("lmao");
+});
 
 // Get all products
-router.get('/products', async (req, res, next) => {
+router.get("/products", auth, async (req, res, next) => {
   try {
     const products = await prisma.product.findMany({
       include: { category: true },
@@ -20,7 +20,7 @@ router.get('/products', async (req, res, next) => {
 });
 
 // Get all categories
-router.get('/categories', async (req, res, next) => {
+router.get("/categories", auth, async (req, res, next) => {
   try {
     const products = await prisma.category.findMany({
       include: { products: true },
@@ -32,14 +32,14 @@ router.get('/categories', async (req, res, next) => {
 });
 
 // Get product by ID
-router.get('/products/:id', async (req, res, next) => {
+router.get("/products/:id", auth, async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await prisma.product.findUnique({
       where: {
-        id: Number(id)
+        id: Number(id),
       },
-      include: { category: true }
+      include: { category: true },
     });
     res.json(product);
   } catch (error) {
@@ -48,10 +48,10 @@ router.get('/products/:id', async (req, res, next) => {
 });
 
 // Add a new product
-router.post('/products', async (req, res, next) => {
+router.post("/products", auth, async (req, res, next) => {
   try {
     const product = await prisma.product.create({
-      data: req.body
+      data: req.body,
     });
     res.json(product);
   } catch (error) {
@@ -60,13 +60,13 @@ router.post('/products', async (req, res, next) => {
 });
 
 // Delete a product by ID
-router.delete('/products/:id', async (req, res, next) => {
+router.delete("/products/:id", auth, async (req, res, next) => {
   try {
     const { id } = req.params;
     const deletedProduct = await prisma.product.delete({
       where: {
         id: Number(id),
-      }
+      },
     });
     res.json(deletedProduct);
   } catch (error) {
@@ -75,12 +75,12 @@ router.delete('/products/:id', async (req, res, next) => {
 });
 
 // Update a product by ID
-router.patch('/products/:id', async (req, res, next) => {
+router.patch("/products/:id", auth, async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await prisma.product.update({
       where: {
-        id: Number(id)
+        id: Number(id),
       },
       data: {
         price: req.body.price,
