@@ -1,10 +1,10 @@
 import "./App.css";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import AppLayout from "./components/layout/AppLayout";
-import Tutorial from "./pages/Tutorial";
 import Dashboard from "./pages/Dashboard";
 import Profiles from "./pages/Profiles";
 import Account from "./pages/Account";
+import Discover from "./pages/Discover";
 import {
   ClerkProvider,
   SignedIn,
@@ -51,7 +51,7 @@ function Menu() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="/profiles" element={<Profiles />} />
-          <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/discover" element={<Discover />} />
           <Route path="/account" element={<Account />} />
         </Route>
       </Routes>

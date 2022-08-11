@@ -16,10 +16,10 @@ const sidebarNavItems = [
     section: "profiles",
   },
   {
-    display: "Tutorial",
+    display: "Discover",
     icon: <i className="bx bx-calendar"></i>,
-    to: "/tutorial",
-    section: "tutorial",
+    to: "/discover",
+    section: "discover",
   },
   {
     display: "Account",
