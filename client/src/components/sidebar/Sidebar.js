@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import useUserState from "../../context/useUserState";
 import "./Sidebar.scss";
 
 const sidebarNavItems = [
@@ -11,10 +10,10 @@ const sidebarNavItems = [
     section: "",
   },
   {
-    display: "Market",
+    display: "Profiles",
     icon: <i className="bx bx-star"></i>,
-    to: "/market",
-    section: "market",
+    to: "/profiles",
+    section: "profiles",
   },
   {
     display: "Tutorial",
@@ -28,26 +27,14 @@ const sidebarNavItems = [
     to: "/account",
     section: "account",
   },
-  {
-    display: "Login",
-    icon: <i className="bx bx-receipt"></i>,
-    to: "/login",
-    section: "login",
-  },
 ];
 
 const Sidebar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [stepHeight, setStepHeight] = useState(0);
-  const { StateContext } = useUserState();
-  const { state, dispatch } = useContext(StateContext);
   const sidebarRef = useRef();
   const indicatorRef = useRef();
   const location = useLocation();
-
-  function logoutEvent() {
-    dispatch({ type: "logout" });
-  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -81,34 +68,18 @@ const Sidebar = () => {
             }px)`,
           }}
         ></div>
-        {sidebarNavItems
-          .filter((item) => {
-            if (item.display === "Login" && state.user !== null) {
-              return false;
-            } else {
-              return true;
-            }
-          })
-          .map((item, index) => (
-            <Link to={item.to} key={index}>
-              <div
-                className={`sidebar__menu__item ${
-                  activeIndex === index ? "active" : ""
-                }`}
-              >
-                <div className="sidebar__menu__item__icon">{item.icon}</div>
-                <div className="sidebar__menu__item__text">{item.display}</div>
-              </div>
-            </Link>
-          ))}
-        {state.user !== null && (
-          <div className="sidebar__menu__item" onClick={logoutEvent}>
-            <div className="sidebar__menu__item__icon">
-              <i className="bx bx-star"></i>
+        {sidebarNavItems.map((item, index) => (
+          <Link to={item.to} key={index}>
+            <div
+              className={`sidebar__menu__item ${
+                activeIndex === index ? "active" : ""
+              }`}
+            >
+              <div className="sidebar__menu__item__icon">{item.icon}</div>
+              <div className="sidebar__menu__item__text">{item.display}</div>
             </div>
-            <div className="sidebar__menu__item__text">Logout</div>
-          </div>
-        )}
+          </Link>
+        ))}
       </div>
     </div>
   );

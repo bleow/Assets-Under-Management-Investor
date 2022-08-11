@@ -13,24 +13,41 @@ datasource db {
 }
 
 model Account {
-  email     String  @id
-  password  String
-  firstName String
-  lastName  String
-  contactNo String
-  balance   Decimal
-  banker    Banker?
-  client    Client?
+  id           String  @id
+  userName     String
+  firstName    String
+  lastName     String
+  location     String?
+  profileImage String?
+  banker       Banker?
+  client       Client?
 }
 
 model Banker {
-  account  Account  @relation(fields: [bankerId], references: [email])
+  account  Account  @relation(fields: [bankerId], references: [id])
   bankerId String   @unique
   manages  Client[]
 }
 
+model Profile {
+  id       String    @id
+  userName String    @unique
+  photo    String
+  location String
+  comments Comment[]
+}
+
+model Comment {
+  profile   Profile  @relation(fields: [commentId], references: [id])
+  commentId String   @unique
+  userName  String
+  photo     String?
+  content   String?
+  createdAt DateTime
+}
+
 model Client {
-  account         Account          @relation(fields: [clientId], references: [email])
+  account         Account          @relation(fields: [clientId], references: [id])
   clientId        String           @unique
   investedCapital Float
   balanceCapital  Float

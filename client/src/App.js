@@ -1,36 +1,61 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import AppLayout from "./components/layout/AppLayout";
 import Tutorial from "./pages/Tutorial";
 import Dashboard from "./pages/Dashboard";
-import Market from "./pages/Market";
+import Profiles from "./pages/Profiles";
 import Account from "./pages/Account";
-import AccountMenu from "./components/header/Header";
-import Login from "./pages/Login";
-import useUserState from "./context/useUserState";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+  RedirectToSignIn,
+} from "@clerk/clerk-react";
 
 function App() {
-  const { StateProvider } = useUserState();
+  const frontendApi = process.env.REACT_APP_CLERK_FRONTEND_API;
+  const navigate = useNavigate();
 
   return (
-    <StateProvider>
-      <div>
-        <div className="App-header">
-          <AccountMenu></AccountMenu>
-        </div>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<AppLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/market" element={<Market />} />
-              <Route path="/tutorial" element={<Tutorial />} />
-              <Route path="/account" element={<Account />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </StateProvider>
+    <ClerkProvider frontendApi={frontendApi} navigate={(to) => navigate(to)}>
+      <SignedIn>
+        <Hello />
+        <Menu />
+      </SignedIn>
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+    </ClerkProvider>
+  );
+}
+
+function Hello() {
+  // Get the user's first name
+  const { user } = useUser();
+  console.log(user);
+
+  return (
+    <div className="App-header navbar sticky app-toolbar">
+      {user ? <h1>Hello, {user.firstName}!</h1> : null}
+      <UserButton />
+    </div>
+  );
+}
+
+function Menu() {
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="/profiles" element={<Profiles />} />
+          <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/account" element={<Account />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 
