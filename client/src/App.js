@@ -21,7 +21,7 @@ function App() {
   return (
     <ClerkProvider frontendApi={frontendApi} navigate={(to) => navigate(to)}>
       <SignedIn>
-        <Hello />
+        <Hello className="hello" />
         <Menu />
       </SignedIn>
       <SignedOut>
@@ -38,7 +38,6 @@ function Hello() {
 
   return (
     <div className="App-header navbar sticky app-toolbar">
-      {user ? <h1>Hello, {user.firstName}!</h1> : null}
       <UserButton />
     </div>
   );

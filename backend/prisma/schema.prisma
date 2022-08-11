@@ -19,14 +19,17 @@ model Account {
   lastName     String
   location     String?
   profileImage String?
+  email        String?
   banker       Banker?
   client       Client?
 }
 
 model Banker {
-  account  Account  @relation(fields: [bankerId], references: [id])
-  bankerId String   @unique
-  manages  Client[]
+  account     Account  @relation(fields: [bankerId], references: [id])
+  bankerId    String   @unique
+  stockChoice String
+  followers   Int
+  manages     Client[]
 }
 
 model Profile {

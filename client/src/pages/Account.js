@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField";
 const Account = () => {
   return (
     <div>
-      <Card style={{ width: "17rem" }}>
+      <Card style={{ width: "17rem", margin: "20" }}>
         <Card.Header>Assets</Card.Header>
         <Card.Body>
           <Card.Title>Assets Value</Card.Title>
@@ -21,22 +21,6 @@ const Account = () => {
             <Button variant="contained">Top-up</Button>
           </div>
         </Card.Body>
-      </Card>
-      <Card className="card" component="form" noValidate autoComplete="off">
-        <div className="card-body-row">
-          <TextField
-            required
-            id="firstName"
-            label="First Name"
-            variant="outlined"
-          />
-          <TextField
-            required
-            id="lastName"
-            label="Last Name"
-            variant="outlined"
-          />
-        </div>
       </Card>
     </div>
   );
